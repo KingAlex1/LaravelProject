@@ -11,6 +11,17 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+
+Route::group(['middleware' => 'auth', ], function () {
+    Route::get('/', 'PostController@index')->name('home');
+    Route::get('about', 'PostController@about')->name('about');
+    Route::get('news', 'PostController@news')->name('news');
+    Route::get('orders', 'PostController@orders')->name('orders');
+    Route::get('category/{post_id}', 'PostController@category');
+    Route::get('game/{post_id}', 'PostController@chooseGame');
+    Route::get('getgames', 'PostController@getGames');
+    Route::post('order', 'PostController@order');
 });
+Auth::routes();
+
+

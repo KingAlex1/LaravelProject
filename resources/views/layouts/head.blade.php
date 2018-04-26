@@ -1,6 +1,3 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
     <title>main - ГеймсМаркет</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,4 +5,4 @@
     <link rel="stylesheet" href="../app/css/libs.min.css">
     <link rel="stylesheet" href="../app/css/main.css">
     <link rel="stylesheet" href="../app/css/media.css">
-</head>
+
