@@ -21,6 +21,13 @@ Route::group(['middleware' => 'auth', ], function () {
     Route::get('game/{post_id}', 'PostController@chooseGame');
     Route::get('getgames', 'PostController@getGames');
     Route::post('order', 'PostController@order');
+    Route::get('setting', 'PostController@setGames')->name('gameSetting');
+    Route::post('editGame', 'PostController@editGame')->name('editGame');
+    Route::post('updateGame', 'PostController@updateGame')->name('updateGame');
+    Route::get('setting/destroy/{post_id}', 'PostController@destroy');
+    Route::post('setting/create', 'PostController@create');
+
+
 });
 Auth::routes();
 

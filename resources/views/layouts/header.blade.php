@@ -11,6 +11,14 @@
                                           class="nav-list__item__link">Новости</a></li>
             <li class="nav-list__item"><a href="{{route(('about'))}}" class="nav-list__item__link">О
                     компании</a></li>
+            @if(Auth::user()->credential== 'admin')
+                <li class="nav-list__item">
+                    <a href="{{route('gameSetting')}}" class="nav-list__item__link">
+                        Настройка Товара
+                        <span class="caret"></span>
+                    </a>
+                </li>
+            @endif
         </ul>
     </nav>
     <div class="header-contact">
