@@ -1524,3 +1524,22 @@ li.auth-href {
 .cart-product__set{
     padding: 15px;
 }
+
+.form-horizontal{
+    margin-bottom: 40px;
+}
+.title-content{
+    text-align: center;
+    font-size: 40px;
+    color: #2F3133;
+    font-weight: bold;
+}
+
+.form-sumbit{
+
+    margin-top: 20px;
+}
+
+.cart-product__item__product-desc{
+    min-width: 150px;
+}

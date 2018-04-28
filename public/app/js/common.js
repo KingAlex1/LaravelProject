@@ -5,6 +5,8 @@ $(document).ready(function () {
         }
     });
 
+    //Main
+
     $(".order-form").submit(function () {
         $.ajax({
             type: "POST",
@@ -18,6 +20,8 @@ $(document).ready(function () {
         });
         return false;
     });
+
+    //Godds
 
     $(".edit-form").submit(function () {
         $.ajax({
@@ -46,6 +50,38 @@ $(document).ready(function () {
             $(this).find("input").val("");
             alert("Игра отредактирована");
             $(".editGame-from").trigger("reset");
+            location.reload();
+        });
+        return false;
+    });
+
+    // Category
+
+    $(".edit-form_cat").submit(function () {
+        $.ajax({
+            type: "POST",
+            url: "editCategory",
+            data: $(this).serialize()
+        }).done(function (data) {
+            console.log(data);
+            $category = JSON.parse(data);
+            $("#nameInput").val($category.name);
+            $("#descriptionInput").val($category.description);
+            $("#idInput").val($category.id);
+        });
+        return false;
+    });
+
+    $(".editCategory-form").submit(function () {
+
+        $.ajax({
+            type: "POST",
+            url: "updateCategory",
+            data: $(this).serialize()
+        }).done(function () {
+            $(this).find("input").val("");
+            alert("Категория отредактирована");
+            $(".editCategory-form").trigger("reset");
             location.reload();
         });
         return false;

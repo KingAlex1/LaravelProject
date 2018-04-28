@@ -1,4 +1,4 @@
-<form enctype="multipart/form-data" class="form-horizontal" action="/setting/create"
+<form enctype="multipart/form-data" class="form-horizontal" action="/setting/good/create"
       method="post">
     {{csrf_field()}}
     <div class="form-group">

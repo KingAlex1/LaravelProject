@@ -14,11 +14,13 @@
                     <div class="content-head__title-wrap__title bcg-title">Последние товары</div>
                 </div>
                 <div class="content-head__search-block">
+
                     <div class="search-container">
-                        <form class="search-container__form">
-                            <input type="text" class="search-container__form__input">
-                            <button class="search-container__form__btn">search</button>
-                        </form>
+                        {!! Form::token(); !!}
+                        {!! Form::model( ['route' =>'home', 'class' => 'search-container__form' ])!!}
+                        {!! Form::text('query', null, [ 'placeholder' => 'Search query...', 'class'=> 'search-container__form__input'] ) !!}
+                        {!! Form::submit('Search' , [ 'class' => 'search-container__form__btn']) !!}
+                        {!! Form::close() !!}
                     </div>
                 </div>
             </div>
@@ -62,7 +64,7 @@
                                     <script>
                                         var num = document.querySelector("#gameID");
                                         var buttons = document.querySelectorAll('.btn-blue');
-                                        for(var i=0;i<buttons.length;i++){
+                                        for (var i = 0; i < buttons.length; i++) {
                                             buttons[i].addEventListener('click', function (e) {
                                                 var id = e.target.parentNode.getAttribute('id');
                                                 num.setAttribute('value', id);

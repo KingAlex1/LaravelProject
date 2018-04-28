@@ -14,6 +14,7 @@ class CreateGamesTable extends Migration
     public function up()
     {
         Schema::create('games', function (Blueprint $table) {
+            $table->engine = 'MyISAM';
             $table->increments('id');
             $table->string('name');
             $table->string('category');
@@ -22,6 +23,8 @@ class CreateGamesTable extends Migration
             $table->string('description');
             $table->timestamps();
         });
+//      settings for search
+        DB::statement('ALTER TABLE games ADD FULLTEXT search(name, category)');
     }
 
     /**

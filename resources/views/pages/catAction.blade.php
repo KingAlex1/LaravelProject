@@ -12,7 +12,7 @@
             <div class="content-head__container">
                 <div class="content-head__title-wrap">
                     <div class="content-head__title-wrap__title bcg-title">Игры в разделе
-                        {{$cat }}
+                        {{$cat}}
                     </div>
                 </div>
                 <div class="content-head__search-block">
@@ -26,16 +26,16 @@
             </div>
             <div class="content-main__container">
                 <div class="products-category__list">
-                    @foreach($categories as $category)
+                    @foreach($games as $game)
                     <div class="products-category__list__item">
                         <div class="products-category__list__item__title-product"><a href="#">{{
-                        $category->name
+                        $game->name
                         }}</a></div>
-                        <div class="products-category__list__item__thumbnail"><a href="/game/{{$category->id}}"
+                        <div class="products-category__list__item__thumbnail"><a href="/game/{{$game->id}}"
                                                                                  class="products-category__list__item__thumbnail__link"><img
-                                        src="../{{$category->image}}" alt="Preview-image"></a></div>
+                                        src="../{{$game->image}}" alt="Preview-image"></a></div>
                         <div class="products-category__list__item__description"><span
-                                    class="products-price">{{$category->price}} руб.</span><a
+                                    class="products-price">{{$game->price}} руб.</span><a
                                     href="#" class="btn btn-blue">Купить</a></div>
                     </div>
                     @endforeach

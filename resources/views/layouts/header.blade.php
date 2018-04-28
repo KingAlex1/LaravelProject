@@ -18,6 +18,12 @@
                         <span class="caret"></span>
                     </a>
                 </li>
+                <li class="nav-list__item">
+                    <a href="{{route('categorySetting')}}" class="nav-list__item__link">
+                        Настройка категория
+                        <span class="caret"></span>
+                    </a>
+                </li>
             @endif
         </ul>
     </nav>

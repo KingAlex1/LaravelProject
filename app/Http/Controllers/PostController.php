@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use App\Game;
 use App\Order;
 use App\User;
@@ -10,27 +11,42 @@ use Illuminate\Contracts\Logging\Log;
 use Illuminate\Http\Request;
 use Illuminate\Mail\Message;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\View;
 
 class PostController extends Controller
 {
+    
     public function index()
     {
+
+        $q = Input::get('query');
+
+        $search = Game::whereRaw(
+            "MATCH(name,category) AGAINST(? IN BOOLEAN MODE)",
+            array($q)
+        )->get();
         $game = Game::all();
         $user = Auth::user();
 
-        return view('pages.index', ['games' => $game, 'user' => $user]);
+         if ( !$search->isEmpty()){
+             return view('pages.index', ['games' => $search, 'user' => $user, 'categories'=>
+                 $this->getCategoryList()]);
+         }
 
+        return view('pages.index', ['games' => $game, 'user' => $user, 'categories'=>
+            $this->getCategoryList()]);
     }
 
     public function about()
     {
-        return view('pages.about');
+        return view('pages.about', ['categories'=> $this->getCategoryList()]);
     }
 
     public function news()
     {
-        return view('pages.news');
+        return view('pages.news', ['categories'=> $this->getCategoryList()]);
     }
 
     public function orders(Request $request)
@@ -42,11 +58,12 @@ class PostController extends Controller
         foreach ($orders as $order) {
             foreach ($order['orders'] as $subOrder) {
                 $games[] = Order::with('games')->get()->where('order_id', '=', $subOrder['order_id'])->toArray();
-
             }
         }
-
-        return view('pages.orders', ['orders' => $userOrders, 'games' => $games]);
+//        echo "<pre>";
+//        print_r($games);
+//        die();
+        return view('pages.orders', ['orders' => $userOrders, 'games' => $games, 'categories'=> $this->getCategoryList()]);
     }
 
 
@@ -69,17 +86,15 @@ class PostController extends Controller
 
     public function editGame(Request $request)
     {
-
         $game = Game::find($request->id);
+
         echo json_encode($game);
+
     }
 
     public function updateGame(Request $request)
     {
-
-
         $game = Game::find($request->id);
-
         $game->name = $request->name;
         $game->category = $request->category;
         $game->price = $request->price;
@@ -87,14 +102,33 @@ class PostController extends Controller
         $game->description = $request->description;
         $game->save();
 
+    }
+
+    public function editCategory(Request $request)
+    {
+        $category = Category::find($request->id);
+
+        echo json_encode($category);
 
     }
 
+    public function updateCategory(Request $request)
+    {
+        $category = Category::find($request->id);
+        $category->name = $request->name;
+        $category->description = $request->description;
+        $category->save();
+
+    }
+
+
     public function category($post_id)
     {
-        $category = Game::all()->where('category', '=', $post_id);
+        $games = Game::all()->where('category', '=', $post_id);
+        $category = Category::with('games')->get()->where('category','=',$post_id);
 
-        return view('pages.catAction', ['categories' => $category, 'cat' => $post_id]);
+
+        return view('pages.catAction', [ 'cat' => $post_id, 'games' => $games, 'categories'=>$this->getCategoryList()]);
     }
 
     public function chooseGame($post_id)
@@ -126,16 +160,24 @@ class PostController extends Controller
     {
         $game = Game::all();
 
-        return view('pages.orderSetting', ['games' => $game]);
+        return view('pages.orderSetting', ['games' => $game, 'categories'=> $this->getCategoryList()]);
     }
 
-    public function destroy($post_id)
+    public function destroyGood($post_id)
     {
         Game::destroy($post_id);
-        return redirect('/setting');
+
+        return redirect('/setting/goods');
     }
 
-    public function create(Request $request)
+    public function destroyCategory($post_id)
+    {
+        Category::destroy($post_id);
+
+        return redirect('/setting/categories');
+    }
+
+    public function createGood(Request $request)
     {
         $game = new Game();
         $game->name = $request->name;
@@ -145,6 +187,44 @@ class PostController extends Controller
         $game->description = $request->description;
         $game->save();
 
-        return redirect('/setting');
+        return redirect('/setting/goods');
+    }
+
+    public function setCategory()
+    {
+        $categories = Category::all();
+
+
+        return view('pages.categorySetting', ['categories' => $categories]);
+    }
+
+    public function createCategory(Request $request)
+    {
+        $category = new Category();
+        $category->name = $request->name;
+        $category->description = $request->description;
+        $category->save();
+
+        return redirect('/setting/categories');
+    }
+
+    public function getCategoryList()
+    {
+        return Category::all();
+
+    }
+
+    public function postSearch()
+    {
+        $q = Input::get('query');
+
+        $games = Game::whereRaw(
+            "MATCH(name,category) AGAINST(? IN BOOLEAN MODE)",
+            array($q)
+        )->get();
+
+        
+        return View::make('pages.index', compact('games'));
+
     }
 }
