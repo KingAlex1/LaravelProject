@@ -46,13 +46,13 @@
                             </div>
                         </div>
                     @endforeach
-                    <div id="win" style="display:none;">
+                    <div id="win"  style="display:none;">
                         <div class="overlay"></div>
                         <div class="visible">
                             <h2 class="order-title">Форма заказа</h2>
                             <div class="content">
-                                <form class="order-form" method="POST">
-                                    {{--CSRF  ТООООООООООООКЕЕЕЕЕЕННННННННННННННННН--}}
+                                <form class="order-form" method="POST" action="sendMail">
+
                                     {{csrf_field()}}
                                     <label for="nameInput"> Ваше Имя </label>
                                     <input id="nameInput" class="order-input" type="text" name="name">
@@ -72,12 +72,7 @@
                                             })
                                         }
 
-
                                     </script>
-                                    {{--<button onClick="getElementById('win').style--}}
-                                    {{--.display='none'; " name="submit" class="order-submit"--}}
-                                    {{-->Отправить--}}
-                                    {{--</button>--}}
                                     <input type="submit" onClick="getElementById('win').style
                                     .display='none';" name="submit" class="order-submit"
                                            value="Подтвердить заказ">
@@ -89,17 +84,9 @@
             </div>
 
             <div class="content-footer__container">
-                <ul class="page-nav">
-                    <li class="page-nav__item"><a href="#" class="page-nav__item__link"><i
-                                    class="fa fa-angle-double-left"></i></a></li>
-                    <li class="page-nav__item"><a href="#" class="page-nav__item__link">1</a></li>
-                    <li class="page-nav__item"><a href="#" class="page-nav__item__link">2</a></li>
-                    <li class="page-nav__item"><a href="#" class="page-nav__item__link">3</a></li>
-                    <li class="page-nav__item"><a href="#" class="page-nav__item__link">4</a></li>
-                    <li class="page-nav__item"><a href="#" class="page-nav__item__link">5</a></li>
-                    <li class="page-nav__item"><a href="#" class="page-nav__item__link"><i
-                                    class="fa fa-angle-double-right"></i></a></li>
-                </ul>
+                {{ $games->links('layouts.paginate') }}
+
+
             </div>
         </div>
         <div class="content-bottom"></div>

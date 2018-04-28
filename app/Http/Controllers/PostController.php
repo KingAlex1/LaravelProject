@@ -11,63 +11,75 @@ use Illuminate\Contracts\Logging\Log;
 use Illuminate\Http\Request;
 use Illuminate\Mail\Message;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\View;
 
 class PostController extends Controller
 {
-    
+
     public function index()
     {
-
         $q = Input::get('query');
-
         $search = Game::whereRaw(
             "MATCH(name,category) AGAINST(? IN BOOLEAN MODE)",
-            array($q)
-        )->get();
-        $game = Game::all();
+            array($q))->paginate(6);
+        $game =Game::paginate(6);
         $user = Auth::user();
 
-         if ( !$search->isEmpty()){
-             return view('pages.index', ['games' => $search, 'user' => $user, 'categories'=>
-                 $this->getCategoryList()]);
-         }
+        if (!$search->isEmpty()) {
+            return view('pages.index', ['games' => $search, 'user' => $user, 'categories' =>
+                $this->getCategoryList(), 'goods' => $this->getNumberOrders()]);
+        }
 
-        return view('pages.index', ['games' => $game, 'user' => $user, 'categories'=>
-            $this->getCategoryList()]);
+        return view('pages.index', ['games' => $game, 'user' => $user, 'categories' =>
+            $this->getCategoryList(), 'goods' => $this->getNumberOrders()]);
     }
 
     public function about()
     {
-        return view('pages.about', ['categories'=> $this->getCategoryList()]);
+        return view('pages.about', ['categories' => $this->getCategoryList(), 'goods' => $this->getNumberOrders()]);
     }
 
     public function news()
     {
-        return view('pages.news', ['categories'=> $this->getCategoryList()]);
+        return view('pages.news', ['categories' => $this->getCategoryList(), 'goods' => $this->getNumberOrders()]);
     }
 
-    public function orders(Request $request)
+    public function orders()
+    {
+        $games = $this->getOrders();
+        return view('pages.orders', ['games' => $games, 'categories' => $this->getCategoryList(), 'goods' => $this->getNumberOrders()]);
+    }
+
+    public function getOrders()
     {
         $user = Auth::user()->email;
         $userOrders = User::with('orders')->get()->where('email', '=', $user);
-        $orders = $userOrders->toArray();
+        $orders = $userOrders;
         $games = [];
-        foreach ($orders as $order) {
-            foreach ($order['orders'] as $subOrder) {
-                $games[] = Order::with('games')->get()->where('order_id', '=', $subOrder['order_id'])->toArray();
-            }
+        echo "<pre>";
+        $ord =$orders->pluck('orders');
+        $ordersArray = $ord->get('0')->pluck('order_id');
+        $NumerOrders = count($ordersArray);
+        $games = [] ;
+        for($i=0; $i < $NumerOrders; $i++  ) {
+            $games[] = Game::all()->where('id','=', $ordersArray->get($i));
         }
-//        echo "<pre>";
-//        print_r($games);
-//        die();
-        return view('pages.orders', ['orders' => $userOrders, 'games' => $games, 'categories'=> $this->getCategoryList()]);
+
+
+        return $games;
+    }
+
+    public function getNumberOrders()
+    {
+        $nubmerOrders = count($this->getOrders());
+        return $nubmerOrders;
     }
 
 
-    public function order(Request $request)
+    public function sendMail(Request $request)
     {
         $order = new Order();
         $order->name = $request->name;
@@ -125,10 +137,10 @@ class PostController extends Controller
     public function category($post_id)
     {
         $games = Game::all()->where('category', '=', $post_id);
-        $category = Category::with('games')->get()->where('category','=',$post_id);
+        $category = Category::with('games')->get()->where('category', '=', $post_id);
 
-
-        return view('pages.catAction', [ 'cat' => $post_id, 'games' => $games, 'categories'=>$this->getCategoryList()]);
+        return view('pages.catAction', ['cat' => $post_id, 'games' => $games,
+            'categories' => $this->getCategoryList(), 'goods' => $this->getNumberOrders()]);
     }
 
     public function chooseGame($post_id)
@@ -158,9 +170,9 @@ class PostController extends Controller
 
     public function setGames()
     {
-        $game = Game::all();
+        $game = Game::paginate(6);
 
-        return view('pages.orderSetting', ['games' => $game, 'categories'=> $this->getCategoryList()]);
+        return view('pages.orderSetting', ['games' => $game, 'categories' => $this->getCategoryList(), 'goods' => $this->getNumberOrders()]);
     }
 
     public function destroyGood($post_id)
@@ -192,10 +204,10 @@ class PostController extends Controller
 
     public function setCategory()
     {
-        $categories = Category::all();
+        $categories = Category::paginate(6);
 
 
-        return view('pages.categorySetting', ['categories' => $categories]);
+        return view('pages.categorySetting', ['categories' => $categories, 'goods' => $this->getNumberOrders()]);
     }
 
     public function createCategory(Request $request)
@@ -214,17 +226,5 @@ class PostController extends Controller
 
     }
 
-    public function postSearch()
-    {
-        $q = Input::get('query');
 
-        $games = Game::whereRaw(
-            "MATCH(name,category) AGAINST(? IN BOOLEAN MODE)",
-            array($q)
-        )->get();
-
-        
-        return View::make('pages.index', compact('games'));
-
-    }
 }

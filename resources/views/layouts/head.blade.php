@@ -5,5 +5,6 @@
     <link rel="stylesheet" href="../app/css/libs.min.css">
     <link rel="stylesheet" href="../app/css/main.css">
     <link rel="stylesheet" href="../app/css/media.css">
+    {{--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">--}}
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 

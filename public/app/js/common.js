@@ -10,7 +10,7 @@ $(document).ready(function () {
     $(".order-form").submit(function () {
         $.ajax({
             type: "POST",
-            url: "order",
+            url: "sendMail",
             data: $(this).serialize()
         }).done(function () {
 

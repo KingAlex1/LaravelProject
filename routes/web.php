@@ -20,7 +20,7 @@ Route::group(['middleware' => 'auth',], function () {
     Route::get('category/{post_id}', 'PostController@category');
     Route::get('game/{post_id}', 'PostController@chooseGame');
     Route::get('getgames', 'PostController@getGames');
-    Route::post('order', 'PostController@order');
+    Route::post('sendMail', 'PostController@sendMail');
     Route::get('setting/goods', 'PostController@setGames')->name('gameSetting');
     Route::get('setting/categories', 'PostController@setCategory')->name('categorySetting');
     Route::post('setting/editGame', 'PostController@editGame')->name('editGame');
@@ -31,14 +31,6 @@ Route::group(['middleware' => 'auth',], function () {
     Route::get('setting/category/destroy/{post_id}', 'PostController@destroyCategory');
     Route::post('setting/good/create', 'PostController@createGood');
     Route::post('setting/category/create', 'PostController@createCategory');
-//    Route::post(
-//        '/',
-//        array(
-//            'as' => 'posts.search',
-//            'uses' => 'PostController@postSearch'
-//        )
-//    );
-
 
 });
 Auth::routes();

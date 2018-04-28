@@ -1543,3 +1543,50 @@ li.auth-href {
 .cart-product__item__product-desc{
     min-width: 150px;
 }
+
+/*Pagination*/
+
+.pagination li{
+    list-style: none;
+    display: inline-block;
+    padding: 0 5px 0 8px;
+
+}
+
+
+.pagination li span {
+    display: block;
+    text-decoration: none;
+    font-family: "PT_Sans", sans-serif;
+    font-size: 1.7rem;
+    color: #1b6d85;
+    font-weight: bold;
+    line-height: 1.7rem;
+    text-align: center;
+}
+.pagination li a {
+    display: block;
+    text-decoration: none;
+    font-family: "PT_Sans", sans-serif;
+    font-size: 1.7rem;
+    color: black;
+    font-weight: bold;
+    line-height: 1.7rem;
+    text-align: center;
+}
+.pagination li a:hover {
+    display: block;
+    text-decoration: none;
+    font-family: "PT_Sans", sans-serif;
+    font-size: 1.7rem;
+    color: #2e6da4;
+    font-weight: bold;
+    line-height: 1.7rem;
+    text-align: center;
+}
+
+.pagination{
+    padding: 10px 20px;
+    position: relative;
+    z-index: 5;
+}

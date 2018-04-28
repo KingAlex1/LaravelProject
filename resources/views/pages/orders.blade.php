@@ -27,7 +27,7 @@
                     @foreach($games as $gamesSlice)
 
                         @foreach($gamesSlice as $game)
-<!--                            --><?php //echo "<pre>"; print_r($game);  die()?>
+<!--                        --><?php //echo "<pre>"; ;  die()?>
                             <div class="cart-product-list__item">
                                 <div class="cart-product__item__product-photo"><img
                                             src="../{{$game['games'][0]['image']}}"
